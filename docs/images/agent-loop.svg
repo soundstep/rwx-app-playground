@@ -62,13 +62,13 @@
 
   <!-- evidence -->
   <rect x="32" y="414" width="896" height="100" rx="12" fill="#1e293b" stroke="#475569"/>
-  <text x="52" y="440" font-size="14" font-weight="700" fill="#f8fafc">Measured on this repo (task test-guides, same content each time)</text>
+  <text x="52" y="440" font-size="14" font-weight="700" fill="#f8fafc">Measured on this repo: full agent run, then push (same content)</text>
   <g font-size="13" fill="#cbd5e1">
-    <text x="52" y="468">rwx run --target test-guides</text>
-    <text x="330" y="468" fill="#fb923c" font-weight="700">executed, 5s</text>
-    <text x="52" y="490">git push: push and pull request runs</text>
-    <text x="330" y="490" fill="#4ade80" font-weight="700">cache hit</text>
-    <text x="500" y="468" fill="#94a3b8">Only the tasks the agent ran are pre-warmed. Run the</text>
-    <text x="500" y="490" fill="#94a3b8">whole graph, not just a target, to pre-warm all of it.</text>
+    <text x="52" y="468">Agent: rwx run, whole graph</text>
+    <text x="330" y="468" fill="#fb923c" font-weight="700">build executed, 9s</text>
+    <text x="52" y="490">Push run and pull request run</text>
+    <text x="330" y="490" fill="#4ade80" font-weight="700">every task cache hit, 3s and 1s</text>
+    <text x="640" y="468" fill="#94a3b8">Only what the agent ran is reused.</text>
+    <text x="640" y="490" fill="#94a3b8">A --target run pre-warms only that task.</text>
   </g>
 </svg>

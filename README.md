@@ -16,16 +16,19 @@ With AI agents writing code, CI becomes the slow part of the loop: the agent pus
 
 ### What we measured
 
-Same content each time, task `test-guides`:
+Two experiments on this repo. Same content in the agent's run and in the pushed runs.
 
-| Step | Trigger | Result |
-|---|---|---|
-| Agent runs `rwx run --target test-guides` | CLI, uncommitted | `executed`, 5s |
-| Agent runs it again | CLI, uncommitted | `cache_hit`, 0s |
-| Commit and push | `github.push` | `cache_hit` |
-| Pull request | `github.pull_request` | `cache_hit` |
+**Full run, then push.** The agent ran the whole graph (`rwx run .rwx/ci.yml`), then committed and pushed.
 
-The push and pull request runs also reused `test-reference` and `pnpm-install`. `build` executed in both, because the agent had only run the `test-guides` target. Only what the agent ran is pre-warmed. Run the whole graph (no `--target`) to pre-warm all of it.
+| Run | Trigger | `pnpm-install` | `test-guides` | `test-reference` | `build` | Time |
+|---|---|---|---|---|---|---|
+| Agent | CLI, uncommitted | `cache_hit` | `cache_hit` | `cache_hit` | `executed` | 9s |
+| Push | `github.push` | `cache_hit` | `cache_hit` | `cache_hit` | `cache_hit` | 3s |
+| Pull request | `github.pull_request` | `cache_hit` | `cache_hit` | `cache_hit` | `cache_hit` | 1s |
+
+The only task that executed was `build`, in the agent's run. Both CI runs reused every result. The other three were already cached from earlier runs of unchanged files.
+
+**Targeted run, then push.** The agent ran only `--target test-guides` after a guide edit: `executed` in 5s. The push and pull request runs then showed `test-guides` as `cache_hit`, but `build` executed, because the agent had not run it. Only what the agent ran is pre-warmed.
 
 ## Coming from GitHub Actions
 
@@ -158,8 +161,8 @@ The tests use only Node's built-in test runner and are deliberately small. They 
 Say these out loud when presenting.
 
 - **The numbers are small.** This is a tiny site, so the seconds saved are small. The value is in how the behaviour scales to slow suites, not in the time saved here.
-- **The agent-to-CI reuse was measured for one task, on one branch.** It matches how content-based caching is documented to work, but a larger pipeline with real dependencies and services may behave differently.
-- **Nothing pre-warms by itself.** If an agent runs only one target, only that target is reused later. If it never runs CI before pushing, CI runs everything.
+- **The agent-to-CI reuse was measured on one small pipeline.** It matches how content-based caching is documented to work, but a larger pipeline with real dependencies and services may behave differently.
+- **Nothing pre-warms by itself.** Only what the agent ran is reused later. If it runs one `--target`, only that target is warm. If it never runs CI before pushing, CI runs everything.
 - **`build` has no filter,** so it re-runs on every change. That is intentional: it depends on the whole site.
 - **`rwx run` executes in the RWX cloud.** It starts from your machine without a commit, but it does not run locally. `pnpm test` is the local equivalent.
 
