@@ -201,3 +201,4 @@ Say these out loud when presenting.
 - [Caching](https://www.rwx.com/docs/caching) and [filtering files](https://www.rwx.com/docs/filtering-files)
 - [CLI triggers](https://www.rwx.com/docs/cli-triggers) and [artifacts](https://www.rwx.com/docs/artifacts)
 - [Self-hosted runners](https://www.rwx.com/docs/self-hosted) and [runner specifications](https://www.rwx.com/docs/runner)
+- [Pricing notes](docs/pricing.md) for this demo
