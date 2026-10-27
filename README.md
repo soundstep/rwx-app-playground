@@ -144,6 +144,33 @@ rwx run .rwx/ci.yml --wait --init release=true
 rwx artifacts list <run-id> --task package
 ```
 
+## Self-hosting
+
+Short answer: you can run your **tasks** in your own cloud account. You cannot self-host the whole platform.
+
+Per the RWX docs on [self-hosted runners](https://www.rwx.com/docs/self-hosted):
+
+- **What moves:** task execution. RWX provisions and tears down the runners using credentials you grant. The orchestration and data planes still live in RWX.
+- **Where:** AWS. For other clouds, contact RWX.
+- **Availability:** not enabled by default. You have to ask RWX to turn it on.
+- **Setup:** create the runner in your organization settings with a label, region, AWS account ID, subnet IDs (they need public egress) and security group IDs. RWX then gives you a [Terraform module](https://registry.terraform.io/modules/rwx-cloud/runner/aws/latest) that creates the IAM resources in your account.
+- **Limits:** no web app tasks and no static IPs.
+
+It is chosen per task, so one run can mix both kinds of runner. A typical use is keeping lint on RWX-managed runners and sending only the tasks that need your network, such as integration tests against an internal database, to your own:
+
+```yaml
+tasks:
+  - key: lint
+    run: npm run lint
+
+  - key: integration-tests
+    runner:
+      self-hosted: my-self-hosted-runner
+    run: npm run test:integration
+```
+
+This repo does not use it. The snippet is from the RWX docs, not from `.rwx/ci.yml`.
+
 ## What is in this repo
 
 | Path | Purpose |
@@ -165,6 +192,7 @@ Say these out loud when presenting.
 - **Nothing pre-warms by itself.** Only what the agent ran is reused later. If it runs one `--target`, only that target is warm. If it never runs CI before pushing, CI runs everything.
 - **`build` has no filter,** so it re-runs on every change. That is intentional: it depends on the whole site.
 - **`rwx run` executes in the RWX cloud.** It starts from your machine without a commit, but it does not run locally. `pnpm test` is the local equivalent.
+- **Self-hosted runners were not tried.** Every task here runs on RWX-managed runners. The cache key includes the runner specification, so pointing a task at a self-hosted runner changes its definition. Check cache reuse before promising it.
 
 ## Further reading
 
@@ -172,3 +200,4 @@ Say these out loud when presenting.
 - [Agentic run loops](https://www.rwx.com/docs/agentic-run-loops)
 - [Caching](https://www.rwx.com/docs/caching) and [filtering files](https://www.rwx.com/docs/filtering-files)
 - [CLI triggers](https://www.rwx.com/docs/cli-triggers) and [artifacts](https://www.rwx.com/docs/artifacts)
+- [Self-hosted runners](https://www.rwx.com/docs/self-hosted) and [runner specifications](https://www.rwx.com/docs/runner)
