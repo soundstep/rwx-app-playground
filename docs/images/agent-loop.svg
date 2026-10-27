@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#64748b"/>
+    </marker>
+    <marker id="arrg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#22c55e"/>
+    </marker>
+    <marker id="arro" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#fb923c"/>
+    </marker>
+    <marker id="arrb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#3b82f6"/>
+    </marker>
+  </defs>
+  <rect width="960" height="540" rx="16" fill="#0f172a"/>
+  <text x="32" y="44" font-size="22" font-weight="700" fill="#f8fafc">The agent runs CI first. The pull request run reuses its results.</text>
+  <text x="32" y="70" font-size="14" fill="#94a3b8">Cache keys come from content, so it does not matter who ran a task, or whether the code was committed yet</text>
+
+  <!-- lane 1: typical -->
+  <text x="32" y="108" font-size="13" font-weight="700" fill="#94a3b8">TYPICAL: CI is the first place the tests run</text>
+  <g font-size="13" text-anchor="middle">
+    <rect x="32" y="122" width="150" height="56" rx="10" fill="#1e293b" stroke="#475569"/>
+    <text x="107" y="155" fill="#e2e8f0">Agent edits code</text>
+    <rect x="222" y="122" width="150" height="56" rx="10" fill="#1e293b" stroke="#475569"/>
+    <text x="297" y="155" fill="#e2e8f0">Commit and push</text>
+    <rect x="412" y="122" width="190" height="56" rx="10" fill="#431407" stroke="#fb923c" stroke-width="2"/>
+    <text x="507" y="148" fill="#fff7ed" font-weight="700">CI runs everything</text>
+    <text x="507" y="166" fill="#fdba74" font-size="12">wait, fail, fix, push again</text>
+    <rect x="642" y="122" width="150" height="56" rx="10" fill="#1e293b" stroke="#475569"/>
+    <text x="717" y="155" fill="#e2e8f0">Green, review</text>
+  </g>
+  <g stroke="#64748b" stroke-width="2" fill="none" marker-end="url(#arr)">
+    <path d="M182,150 L222,150"/>
+    <path d="M372,150 L412,150"/>
+    <path d="M602,150 L642,150"/>
+  </g>
+  <path d="M507,178 C507,214 107,214 107,180" stroke="#fb923c" stroke-width="2" stroke-dasharray="5 5" fill="none" marker-end="url(#arro)"/>
+  <text x="307" y="224" font-size="12" fill="#fdba74" text-anchor="middle">every failure costs a push and a full CI round trip</text>
+
+  <!-- lane 2: with RWX -->
+  <text x="32" y="270" font-size="13" font-weight="700" fill="#4ade80">WITH RWX: the agent runs the same CI tasks before committing</text>
+  <g font-size="13" text-anchor="middle">
+    <rect x="32" y="284" width="150" height="56" rx="10" fill="#1e293b" stroke="#475569"/>
+    <text x="107" y="317" fill="#e2e8f0">Agent edits code</text>
+    <rect x="222" y="284" width="190" height="56" rx="10" fill="#172554" stroke="#3b82f6" stroke-width="2"/>
+    <text x="317" y="310" fill="#eff6ff" font-weight="700">rwx run --wait</text>
+    <text x="317" y="328" fill="#bfdbfe" font-size="12">no commit, patched working tree</text>
+    <rect x="452" y="284" width="150" height="56" rx="10" fill="#1e293b" stroke="#475569"/>
+    <text x="527" y="317" fill="#e2e8f0">Commit and push</text>
+    <rect x="642" y="284" width="286" height="56" rx="10" fill="#052e16" stroke="#22c55e" stroke-width="2"/>
+    <text x="785" y="310" fill="#f0fdf4" font-weight="700">PR CI: cache hits</text>
+    <text x="785" y="328" fill="#86efac" font-size="12">same content, so nothing re-executes</text>
+  </g>
+  <g stroke="#64748b" stroke-width="2" fill="none" marker-end="url(#arr)">
+    <path d="M182,312 L222,312"/>
+    <path d="M412,312 L452,312"/>
+  </g>
+  <path d="M602,312 L642,312" stroke="#22c55e" stroke-width="2" fill="none" marker-end="url(#arrg)"/>
+  <path d="M317,340 C317,376 107,376 107,342" stroke="#3b82f6" stroke-width="2" stroke-dasharray="5 5" fill="none" marker-end="url(#arrb)"/>
+  <text x="212" y="388" font-size="12" fill="#93c5fd" text-anchor="middle">fix and re-run until green, cheap because unchanged tasks are cache hits</text>
+
+  <!-- evidence -->
+  <rect x="32" y="414" width="896" height="100" rx="12" fill="#1e293b" stroke="#475569"/>
+  <text x="52" y="440" font-size="14" font-weight="700" fill="#f8fafc">Measured on this repo: full agent run, then push (same content)</text>
+  <g font-size="13" fill="#cbd5e1">
+    <text x="52" y="468">Agent: rwx run, whole graph</text>
+    <text x="330" y="468" fill="#fb923c" font-weight="700">build executed, 9s</text>
+    <text x="52" y="490">Push run and pull request run</text>
+    <text x="330" y="490" fill="#4ade80" font-weight="700">every task cache hit, 3s and 1s</text>
+    <text x="640" y="468" fill="#94a3b8">Only what the agent ran is reused.</text>
+    <text x="640" y="490" fill="#94a3b8">A --target run pre-warms only that task.</text>
+  </g>
+</svg>

@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 520" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <rect width="960" height="520" rx="16" fill="#0f172a"/>
+  <text x="32" y="44" font-size="22" font-weight="700" fill="#f8fafc">Four things that will surprise you coming from GitHub Actions</text>
+  <text x="32" y="70" font-size="14" fill="#94a3b8">Each one follows from the same rule: the cache key is built from content</text>
+
+  <!-- card 1 -->
+  <rect x="32" y="96" width="444" height="196" rx="12" fill="#1e293b" stroke="#ef4444" stroke-width="2"/>
+  <circle cx="64" cy="128" r="16" fill="#ef4444"/>
+  <text x="64" y="134" font-size="16" font-weight="700" fill="#fff" text-anchor="middle">1</text>
+  <text x="92" y="134" font-size="16" font-weight="700" fill="#f8fafc">A filter is also what exists on disk</text>
+  <text x="52" y="168" font-size="13" fill="#cbd5e1">A file missing from the filter is not hidden from the</text>
+  <text x="52" y="188" font-size="13" fill="#cbd5e1">cache key, it is absent from the task's filesystem.</text>
+  <rect x="52" y="206" width="404" height="64" rx="8" fill="#0f172a"/>
+  <text x="68" y="232" font-size="12" fill="#fca5a5" font-family="Menlo, Consolas, monospace">filter: [tests/guides.test.mjs]  # forgot helpers</text>
+  <text x="68" y="254" font-size="12" fill="#94a3b8" font-family="Menlo, Consolas, monospace">-&gt; the task fails: file not found</text>
+
+  <!-- card 2 -->
+  <rect x="484" y="96" width="444" height="196" rx="12" fill="#1e293b" stroke="#f59e0b" stroke-width="2"/>
+  <circle cx="516" cy="128" r="16" fill="#f59e0b"/>
+  <text x="516" y="134" font-size="16" font-weight="700" fill="#0f172a" text-anchor="middle">2</text>
+  <text x="544" y="134" font-size="16" font-weight="700" fill="#f8fafc">Filters are not inherited</text>
+  <text x="504" y="168" font-size="13" fill="#cbd5e1">A task that uses a filtered task sees the whole</text>
+  <text x="504" y="188" font-size="13" fill="#cbd5e1">workspace again. Every task needs its own filter.</text>
+  <rect x="504" y="206" width="404" height="64" rx="8" fill="#0f172a"/>
+  <text x="520" y="232" font-size="12" fill="#fcd34d" font-family="Menlo, Consolas, monospace">pnpm-install  filter: [package.json, lock]</text>
+  <text x="520" y="254" font-size="12" fill="#94a3b8" font-family="Menlo, Consolas, monospace">build (use: pnpm-install) -&gt; sees every file</text>
+
+  <!-- card 3 -->
+  <rect x="32" y="308" width="444" height="196" rx="12" fill="#1e293b" stroke="#3b82f6" stroke-width="2"/>
+  <circle cx="64" cy="340" r="16" fill="#3b82f6"/>
+  <text x="64" y="346" font-size="16" font-weight="700" fill="#fff" text-anchor="middle">3</text>
+  <text x="92" y="346" font-size="16" font-weight="700" fill="#f8fafc">rwx run starts local, executes in the cloud</text>
+  <text x="52" y="380" font-size="13" fill="#cbd5e1">The CLI sends your uncommitted edits as a patch and</text>
+  <text x="52" y="400" font-size="13" fill="#cbd5e1">the tasks execute on RWX. No commit or push needed.</text>
+  <rect x="52" y="418" width="404" height="64" rx="8" fill="#0f172a"/>
+  <text x="68" y="444" font-size="12" fill="#93c5fd" font-family="Menlo, Consolas, monospace">rwx run .rwx/ci.yml --target test-guides --wait</text>
+  <text x="68" y="466" font-size="12" fill="#94a3b8" font-family="Menlo, Consolas, monospace">pnpm test   # the same tests, on your machine</text>
+
+  <!-- card 4 -->
+  <rect x="484" y="308" width="444" height="196" rx="12" fill="#1e293b" stroke="#a855f7" stroke-width="2"/>
+  <circle cx="516" cy="340" r="16" fill="#a855f7"/>
+  <text x="516" y="346" font-size="16" font-weight="700" fill="#fff" text-anchor="middle">4</text>
+  <text x="544" y="346" font-size="16" font-weight="700" fill="#f8fafc">Cached means cached, even if wrong</text>
+  <text x="504" y="380" font-size="13" fill="#cbd5e1">RWX does not detect non-determinism. A task that</text>
+  <text x="504" y="400" font-size="13" fill="#cbd5e1">calls date or the network is reused like any other.</text>
+  <rect x="504" y="418" width="404" height="64" rx="8" fill="#0f172a"/>
+  <text x="520" y="444" font-size="12" fill="#d8b4fe" font-family="Menlo, Consolas, monospace">cache: false            # always run</text>
+  <text x="520" y="466" font-size="12" fill="#d8b4fe" font-family="Menlo, Consolas, monospace">cache: { ttl: 7 days }  # refresh weekly</text>
+</svg>
