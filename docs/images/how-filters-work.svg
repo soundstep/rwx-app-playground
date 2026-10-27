@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 420" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#64748b"/>
+    </marker>
+  </defs>
+  <rect width="960" height="420" rx="16" fill="#0f172a"/>
+  <text x="32" y="44" font-size="22" font-weight="700" fill="#f8fafc">How it works: a filter decides what a task can see, and what busts its cache</text>
+  <text x="32" y="70" font-size="14" fill="#94a3b8">The same repository, three different views of it</text>
+
+  <!-- repo column -->
+  <rect x="32" y="96" width="210" height="296" rx="12" fill="#1e293b" stroke="#475569"/>
+  <text x="137" y="124" font-size="14" font-weight="700" fill="#f8fafc" text-anchor="middle">Whole repository</text>
+  <g font-size="12" fill="#cbd5e1">
+    <text x="52" y="156">package.json</text>
+    <text x="52" y="182">pnpm-lock.yaml</text>
+    <text x="52" y="208">astro.config.mjs</text>
+    <text x="52" y="234">tests/helpers.mjs</text>
+    <text x="52" y="260">tests/guides.test.mjs</text>
+    <text x="52" y="286">tests/reference.test.mjs</text>
+    <text x="52" y="312">src/content/docs/guides/</text>
+    <text x="52" y="338">src/content/docs/reference/</text>
+    <text x="52" y="364">src/content/docs/index.mdx</text>
+  </g>
+
+  <!-- lanes -->
+  <g stroke="#64748b" stroke-width="2" fill="none" marker-end="url(#arr)">
+    <path d="M242,160 L300,160"/>
+    <path d="M242,244 L300,244"/>
+    <path d="M242,328 L300,328"/>
+    <path d="M640,160 L700,160"/>
+    <path d="M640,244 L700,244"/>
+    <path d="M640,328 L700,328"/>
+  </g>
+
+  <!-- lane 1 -->
+  <rect x="300" y="120" width="340" height="80" rx="10" fill="#172554" stroke="#3b82f6" stroke-width="2"/>
+  <text x="318" y="146" font-size="15" font-weight="700" fill="#eff6ff">pnpm-install</text>
+  <text x="318" y="170" font-size="12" fill="#bfdbfe">sees: package.json, pnpm-lock.yaml</text>
+  <text x="318" y="188" font-size="12" fill="#93c5fd">2 files</text>
+
+  <!-- lane 2 -->
+  <rect x="300" y="204" width="340" height="80" rx="10" fill="#172554" stroke="#3b82f6" stroke-width="2"/>
+  <text x="318" y="230" font-size="15" font-weight="700" fill="#eff6ff">test-guides</text>
+  <text x="318" y="254" font-size="12" fill="#bfdbfe">sees: guides/, astro.config.mjs,</text>
+  <text x="318" y="272" font-size="12" fill="#bfdbfe">helpers.mjs, guides.test.mjs</text>
+
+  <!-- lane 3 -->
+  <rect x="300" y="288" width="340" height="80" rx="10" fill="#172554" stroke="#3b82f6" stroke-width="2"/>
+  <text x="318" y="314" font-size="15" font-weight="700" fill="#eff6ff">test-reference</text>
+  <text x="318" y="338" font-size="12" fill="#bfdbfe">sees: reference/, helpers.mjs,</text>
+  <text x="318" y="356" font-size="12" fill="#bfdbfe">reference.test.mjs</text>
+
+  <!-- cache key panel -->
+  <rect x="700" y="96" width="228" height="296" rx="12" fill="#1e293b" stroke="#475569"/>
+  <text x="814" y="124" font-size="14" font-weight="700" fill="#f8fafc" text-anchor="middle">Cache key per task</text>
+  <text x="716" y="156" font-size="12" fill="#cbd5e1">hash of:</text>
+  <text x="716" y="178" font-size="12" fill="#cbd5e1">- the run script</text>
+  <text x="716" y="198" font-size="12" fill="#cbd5e1">- the files it can see</text>
+  <text x="716" y="218" font-size="12" fill="#cbd5e1">- its use dependencies</text>
+  <text x="716" y="238" font-size="12" fill="#cbd5e1">- env vars and base image</text>
+  <line x1="716" y1="256" x2="912" y2="256" stroke="#475569"/>
+  <text x="716" y="282" font-size="13" font-weight="700" fill="#4ade80">Same key: reuse the result</text>
+  <text x="716" y="306" font-size="13" font-weight="700" fill="#fb923c">New key: run the task</text>
+  <text x="716" y="340" font-size="12" fill="#94a3b8">index.mdx is in no filter, so</text>
+  <text x="716" y="358" font-size="12" fill="#94a3b8">editing it re-runs only build.</text>
+</svg>
