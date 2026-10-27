@@ -67,6 +67,8 @@ From [`.rwx/ci.yml`](.rwx/ci.yml):
 
 Edit anything under `src/content/docs/reference` and this task's key does not change, so RWX reuses the earlier result. The same mechanism is what lets an agent's run and the pull request run share results: the key depends on content, not on the commit or the trigger.
 
+<img width="1176" height="630" alt="Screenshot 2026-10-27 at 10 05 23" src="https://github.com/user-attachments/assets/59f56b15-8ed0-4d23-837d-98c0c34f845f" />
+
 ## Gotchas
 
 ![Four gotchas](docs/images/gotchas.svg)
